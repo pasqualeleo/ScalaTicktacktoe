@@ -1,7 +1,8 @@
+package player
+
 sealed trait Player
 
 case class X() extends Player
-
 
 case class O() extends Player
 
