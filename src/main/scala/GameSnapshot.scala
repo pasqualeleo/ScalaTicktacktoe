@@ -1,3 +1,5 @@
+import player.Player
+
 import scala.collection.immutable.HashMap
 
 case class GameSnapshot(snap: HashMap[(Int, Int), Player]){
