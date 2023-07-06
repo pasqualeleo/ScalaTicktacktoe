@@ -1,3 +1,5 @@
+import scala.annotation.tailrec
+
 case class Cell(x: Int, y:Int, player: Option[Player] = Option.empty) {
 
   def ==(cell: Cell):Boolean = x == cell.x && cell.y == y
@@ -23,11 +25,41 @@ case class Board(cells: List[Cell],
 
   def getCell(x: Int, y: Int): Option[Cell] = cells.find(Cell(x,y) == _)
 
-  def getEmptyCells:List[Cell] = cells.filter(_.isEmpty)
+  def getEmptyCells: List[Cell] = cells.filter(_.isEmpty)
 
-  private def setMove(cell: Cell): List[Cell] = cells.updated(cordToIndex(cell), cell.setPlayer(currentPlayer))
 
-  private def isThereWinner(update: List[Cell]): Boolean = ???
+
+  def isThereWinner(updatedCells: List[Cell]): Boolean = {
+
+    @tailrec
+    def checkLine(updatedCells: List[Cell]): Boolean = updatedCells match {
+      case Nil => false
+      case h1::h2::h3::_ if h1.player == h2.player &&
+                            h2.player == h3.player &&
+                            h3.player.isDefined => true
+      case _ :: _ :: _ ::t => checkLine(t)
+    }
+
+    def checkOblique(updatedCells: List[Cell]): Boolean = updatedCells match {
+      case h1::_::_::_::h2::_::_::_::h3::_ if h1.player == h2.player &&
+                                              h2.player == h3.player &&
+                                              h3.player.isDefined => true
+      case _::_::h1::_::h2::_::h3::_::_::_ if h1.player == h2.player &&
+                                              h2.player == h3.player &&
+                                              h3.player.isDefined => true
+      case _ => false
+    }
+
+    val horiz = checkLine(updatedCells)
+    val vert = checkLine(updatedCells.sortBy(_.y))
+    val oblique = checkOblique(updatedCells: List[Cell])
+
+    horiz || vert || oblique
+  }
+
+
+  private def setMove(cell: Cell): List[Cell] =
+    cells.updated(cordToIndex(cell), cell.setPlayer(currentPlayer))
 
   override def toString: String = {
     cells
