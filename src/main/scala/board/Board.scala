@@ -3,7 +3,7 @@ import player.Player
 
 case class Board(cells: List[Cell]){
 
-  def getCell(x: Int, y: Int): Option[Cell] = cells.find(Cell(x,y) == _)
+  def getCell(x: Int, y: Int): Option[Cell] = cells.find(cell => cell.x == x && cell.x == y)
 
   def getEmptyCells: List[Cell] = cells.filter(_.player.isEmpty)
 
