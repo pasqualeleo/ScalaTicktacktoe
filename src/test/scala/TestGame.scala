@@ -1,9 +1,10 @@
+import game.Game
 import org.scalatest.wordspec.AnyWordSpec
-import player.{P, X}
+import player.{O, P, X}
 
 class TestGame extends AnyWordSpec{
 
-  "A Game" should{
+  "A game.Game" should{
     val game = Game()
 
     "at bagging has nothing winner and current player is X" in {
@@ -16,7 +17,7 @@ class TestGame extends AnyWordSpec{
       val game1 = game.toGame(1,1)
 
       assert(game1.winner.isEmpty)
-      assert(game1.currentPlayer == X())
+      assert(game1.currentPlayer == O())
       assert(game1.board.getCell(1,1).get.player.get == X())
     }
 

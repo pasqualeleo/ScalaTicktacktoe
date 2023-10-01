@@ -1,3 +1,5 @@
+package game
+
 import board.Board
 import player.{O, P, Player, X}
 
@@ -16,7 +18,8 @@ case class Game(board: Board,
 
   private def checkWinner(updatedBoard: Board): Option[Player] =
       updatedBoard.getLines
-                  .filter(!_.map(_.player).contains(None))
+                  .filter(!_.map(_.player)
+                  .contains(None))
                   .map(_.map(_.player.get))
                   .map(_.reduce(_ + _))  match {
         case l if l.contains(X()) => Some(X())
